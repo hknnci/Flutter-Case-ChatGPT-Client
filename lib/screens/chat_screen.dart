@@ -113,6 +113,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 child: Padding(
                   padding: const EdgeInsets.all(10),
                   child: TextFormField(
+                    onTap: () => FocusScope.of(context).requestFocus(messageFN),
                     controller: messageTEC,
                     focusNode: messageFN,
                     style: const TextStyle(
@@ -124,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     decoration: InputDecoration(
                       hintText: Constants.message,
                       hintStyle: TextStyle(
-                        color: Colors.white.withOpacity(0.7),
+                        color: messageFN.hasFocus ? Colors.white : Colors.white.withOpacity(0.7),
                         fontSize: 14.50,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.38,
@@ -139,17 +140,20 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                       filled: true,
                       fillColor: Colors.white.withOpacity(0.15),
-                      suffixIcon: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50.0),
-                          color: Colors.white,
-                        ),
-                        child: IconButton(
-                          icon: const Icon(Icons.arrow_forward),
-                          color: Colors.black,
-                          onPressed: () async {
-                            await sendMessageFunction(chatList: chatList, message: messageTEC.text);
-                          },
+                      suffixIcon: Padding(
+                        padding: const EdgeInsets.only(right: 12.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50.0),
+                            color: messageFN.hasFocus ? const Color(0xFFb6fbff) : Colors.white,
+                          ),
+                          child: IconButton(
+                            icon: const Icon(Icons.arrow_forward),
+                            color: Colors.black,
+                            onPressed: () async {
+                              await sendMessageFunction(chatList: chatList, message: messageTEC.text);
+                            },
+                          ),
                         ),
                       ),
                       contentPadding: const EdgeInsets.all(20),

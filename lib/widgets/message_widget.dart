@@ -24,6 +24,7 @@ class MessageWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     backgroundColor: chatIndex == 0 ? const Color(0xFFC8B6FF) : const Color(0xFFB6FBFF),
+                    child: chatIndex == 0 ? const Text("R", style: TextStyle(color: Colors.white)) : null,
                   ),
                   const SizedBox(width: 15),
                   Expanded(
