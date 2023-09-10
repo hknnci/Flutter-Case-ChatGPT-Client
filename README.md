@@ -1,5 +1,24 @@
 # Flutter Case: ChatGPT Client
 
-This is a starter project for ChatGPT Client app. Please fork this repo to start developing.
+This Flutter application allows users to view and send text-based messages by using Chat GPT, a state-of-the-art natural language processing model.
 
-You can learn more about this case here: https://www.notion.so/reloadapp/Flutter-Case-ChatGPT-Client-b23bdf12bb804eaf9bfc6086e481d3a7?pvs=4
+# Features
+
+- Users can send text-based messages.
+- ChatGPT is integrated to assist with generating responses.
+- Chat history is stored locally and can be accessed even after the application is restarted also messages can be deleted.
+
+# Packages Used
+
+- GetX
+- http
+- flutter_svg
+- flutter_spinkit
+- shared_preferences
+
+# Getting Started
+
+- Clone the project => `git clone https://github.com/hknnci/Flutter-Case-ChatGPT-Client.git`
+- Navigate to the project folder => `cd chatGptClient`
+- Install dependencies => `flutter pub get`
+- Run the app => `flutter run`
