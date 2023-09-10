@@ -1,5 +1,6 @@
 import 'package:chatgpt_flutter_case/controller/home_controller.dart';
 import 'package:chatgpt_flutter_case/utils/constants.dart';
+import 'package:chatgpt_flutter_case/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -37,11 +38,11 @@ class HomeScreen extends GetView<HomeController> {
                         ),
                         TextSpan(
                           text: Constants.chatBot,
-                          style: controller.titleTextStyle(isTextWhite: true),
+                          style: controller.titleTextStyle(),
                         ),
                         TextSpan(
                           text: Constants.nCase,
-                          style: controller.titleTextStyle(isTextWhite: true),
+                          style: controller.titleTextStyle(),
                         ),
                       ],
                     ),
@@ -70,7 +71,7 @@ class HomeScreen extends GetView<HomeController> {
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => Get.to(() => const ChatScreen()),
                         style: ElevatedButton.styleFrom(padding: const EdgeInsets.all(15)),
                         child: Text(
                           Constants.buttonContinue,
