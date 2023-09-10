@@ -29,7 +29,7 @@ class Constants {
 
   //API Constants
   static String baseURL = "https://api.openai.com/v1";
-  static String apiKey = "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";
+  static String apiKey = "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";
   static String modelName = "gpt-3.5-turbo";
 
 }
