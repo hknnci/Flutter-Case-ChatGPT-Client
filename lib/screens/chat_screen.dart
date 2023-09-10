@@ -33,6 +33,9 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     loadChatList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      scrollListToEnd();
+    });
   }
 
   @override
@@ -53,6 +56,7 @@ class _ChatScreenState extends State<ChatScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete),
+            tooltip: Constants.deleteChat,
             onPressed: () {
               showDialog(
                 context: context,
@@ -82,90 +86,99 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                controller: _listSC,
-                itemCount: chatList.length,
-                itemBuilder: (context, index) {
-                  return MessageWidget(
-                    msg: chatList[index].msg,
-                    chatIndex: chatList[index].chatIndex,
-                  );
-                },
-              ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              controller: _listSC,
+              itemCount: chatList.length,
+              itemBuilder: (context, index) {
+                return MessageWidget(
+                  msg: chatList[index].msg,
+                  chatIndex: chatList[index].chatIndex,
+                );
+              },
             ),
-            if (_isTyping) ...[
-              const SpinKitThreeBounce(
-                color: Colors.white,
-                size: 18,
-              ),
-            ],
-            const SizedBox(height: 10),
-            Row(
-              children: [
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: TextFormField(
-                      controller: messageTEC,
-                      focusNode: messageFN,
-                      style: const TextStyle(
-                        color: Colors.white,
+          ),
+          if (_isTyping) ...[
+            const SpinKitThreeBounce(
+              color: Colors.white,
+              size: 18,
+            ),
+          ],
+          const SizedBox(height: 10),
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: TextFormField(
+                    controller: messageTEC,
+                    focusNode: messageFN,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 14.50,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 0.38,
+                    ),
+                    decoration: InputDecoration(
+                      hintText: Constants.message,
+                      hintStyle: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
                         fontSize: 14.50,
                         fontWeight: FontWeight.w500,
                         letterSpacing: 0.38,
                       ),
-                      decoration: InputDecoration(
-                        hintText: Constants.message,
-                        hintStyle: TextStyle(
-                          color: Colors.white.withOpacity(0.7),
-                          fontSize: 14.50,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 0.38,
-                        ),
-                        border: InputBorder.none,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Color(0xFFb6fbff)),
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        filled: true,
-                        fillColor: Colors.white.withOpacity(0.15),
-                        suffixIcon: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.0),
-                            color: Colors.white,
-                          ),
-                          child: IconButton(
-                            icon: const Icon(Icons.arrow_forward),
-                            color: Colors.black,
-                            onPressed: () async {
-                              await sendMessageFunction(chatList: chatList, message: messageTEC.text);
-                            },
-                          ),
-                        ),
-                        contentPadding: const EdgeInsets.all(20),
+                      border: InputBorder.none,
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(50.0),
                       ),
-                      onFieldSubmitted: (value) async =>
-                          await sendMessageFunction(chatList: chatList, message: messageTEC.text),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: const BorderSide(color: Color(0xFFb6fbff)),
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                      filled: true,
+                      fillColor: Colors.white.withOpacity(0.15),
+                      suffixIcon: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50.0),
+                          color: Colors.white,
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_forward),
+                          color: Colors.black,
+                          onPressed: () async {
+                            await sendMessageFunction(chatList: chatList, message: messageTEC.text);
+                          },
+                        ),
+                      ),
+                      contentPadding: const EdgeInsets.all(20),
                     ),
+                    onFieldSubmitted: (value) async =>
+                        await sendMessageFunction(chatList: chatList, message: messageTEC.text),
                   ),
                 ),
-              ],
-            )
-          ],
-        ),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
 
   void scrollListToEnd() {
-    _listSC.animateTo(_listSC.position.maxScrollExtent, duration: const Duration(seconds: 2), curve: Curves.bounceOut);
+    Future.delayed(
+      const Duration(milliseconds: 200),
+      () {
+        if (_listSC.hasClients) {
+          _listSC.animateTo(
+            _listSC.position.maxScrollExtent,
+            duration: const Duration(seconds: 2),
+            curve: Curves.easeInOut,
+          );
+        }
+      },
+    );
   }
 
   void loadChatList() async {
